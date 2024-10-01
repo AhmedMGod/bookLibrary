@@ -9,6 +9,7 @@ Frontend: React mit TypeScript
 
 Backend: Spring Boot (Java)
 
+
 Datenbank: MongoBD
 
 Sicherheit: JWT für Authentifizierung (optional)
