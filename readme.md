@@ -4,10 +4,15 @@ Das Projekt verwendet React mit TypeScript für das Frontend und Spring Boot fü
 Es unterstützt Benutzerregistrierung, Authentifizierung und Buchausleihe.
 
 Technologie-Stack
+
 Frontend: React mit TypeScript
+
 Backend: Spring Boot (Java)
+
 Datenbank: MongoBD
+
 Sicherheit: JWT für Authentifizierung (optional)
+
 Build- und Deployment-Tools: Maven, GitHub Actions
 
 Funktionalitäten
