@@ -25,3 +25,23 @@ Admin-Funktionen
 Bücher verwalten: Administratoren können Bücher hinzufügen, bearbeiten und löschen.
 
 Benutzer verwalten: Administratoren können Benutzerinformationen verwalten.
+
+API-Endpunkte
+
+Benutzer
+
+POST /api/users/register – Benutzer registrieren
+POST /api/users/login – Benutzer authentifizieren (JWT)
+
+Bücher
+
+GET /api/books – Alle Bücher anzeigen
+GET /api/books/{id} – Einzelnes Buch anzeigen
+POST /api/books – Buch hinzufügen (Admin)
+PUT /api/books/{id} – Buch aktualisieren (Admin)
+DELETE /api/books/{id} – Buch löschen (Admin)
+
+Ausleihe
+
+POST /api/loans – Buch ausleihen
+PUT /api/loans/{id}/return – Buch zurückgeben
