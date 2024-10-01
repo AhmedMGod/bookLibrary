@@ -11,10 +11,17 @@ Sicherheit: JWT für Authentifizierung (optional)
 Build- und Deployment-Tools: Maven, GitHub Actions
 
 Funktionalitäten
+
 Benutzerfunktionen
+
 Registrierung und Login: Benutzer können sich registrieren, einloggen und ihr Profil verwalten.
+
 Buchausleihe: Benutzer können verfügbare Bücher ausleihen und zurückgeben.
+
 Bücher durchsuchen: Eine Liste aller verfügbaren Bücher mit Filter- und Suchfunktionen anzeigen.
+
 Admin-Funktionen
+
 Bücher verwalten: Administratoren können Bücher hinzufügen, bearbeiten und löschen.
+
 Benutzer verwalten: Administratoren können Benutzerinformationen verwalten.
