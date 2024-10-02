@@ -17,19 +17,25 @@ public class BookLibraryService {
 
     public Book createBook(Book book) {
         Book newBook = new Book(
-                newBook.id(),
-                newBook.author(),
-                newBook.image(),
-                newBook.title()
+                book.id(),
+                book.author(),
+                book.image(),
+                book.title()
         );
-        return bookLibraryRepository.save(book);
+        return bookLibraryRepository.save(newBook);
     }
 
     public Book updateBook(Book book) {
+
         return bookLibraryRepository.save(book);
     }
 
     public void deleteBook(String id) {
+
         bookLibraryRepository.deleteById(id);
+    }
+
+    public Book getBook(String id) {
+        return bookLibraryRepository.findById(id).orElse(null);
     }
 }
