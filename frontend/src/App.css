@@ -40,3 +40,51 @@
 .read-the-docs {
   color: #888;
 }
+/* Main container background */
+.main-container {
+  background-image: url('https://www.example.com/path-to-background-image.jpg'); /* Replace with your background image */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding-top: 30px;
+}
+
+/* Custom font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-navbar {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Carousel image adjustments */
+.carousel-img-wrapper {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-img {
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+/* Footer styling */
+footer {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+h4, p {
+  font-weight: 300;
+}
