@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -11,32 +12,31 @@ public class BookLibraryService {
 
     private BookLibraryRepository bookLibraryRepository;
 
-    public List<Book> getBooks() {
+    public List<BookLibraryDTO> getBooks() {
         return bookLibraryRepository.findAll();
     }
 
-    public Book createBook(Book book) {
-        Book newBook = new Book(
-                book.id(),
-
-                book.author(),
-                book.image(),
-                book.title()
+    public BookLibraryDTO createBook(BookLibraryDTO bookLibraryDTO) {
+        BookLibraryDTO newBook = new BookLibraryDTO(
+                UUID.randomUUID(),
+                bookLibraryDTO.author(),
+                bookLibraryDTO.image(),
+                bookLibraryDTO.title()
         );
         return bookLibraryRepository.save(newBook);
     }
 
-    public Book updateBook(Book book) {
+    public BookLibraryDTO updateBook(BookLibraryDTO book) {
 
         return bookLibraryRepository.save(book);
     }
 
     public void deleteBook(String id) {
 
-        bookLibraryRepository.deleteById(id);
+        bookLibraryRepository.deleteById(UUID.fromString(id));
     }
 
-    public Book getBook(String id) {
-        return bookLibraryRepository.findById(id).orElse(null);
+    public BookLibraryDTO getBook(String id) {
+        return bookLibraryRepository.findById(UUID.fromString(id)).orElse(null);
     }
 }

@@ -1,4 +1,6 @@
 package org.example.backendlibrary;
 
-public record BookLibraryDTO() {
+import java.util.UUID;
+
+public record BookLibraryDTO(UUID id,  String title, String author, String image) {
 }

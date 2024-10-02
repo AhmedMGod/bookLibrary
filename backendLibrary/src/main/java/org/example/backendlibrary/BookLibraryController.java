@@ -14,24 +14,24 @@ public class BookLibraryController {
     private final BookLibraryService bookLibraryService;
 
     @GetMapping
-    public List<Book> getBooks() {
+    public List<BookLibraryDTO > getBooks() {
 
         return bookLibraryService.getBooks();
     }
 
     @GetMapping("{/id}")
-    public Book getBook(@PathVariable String id) {
+    public BookLibraryDTO  getBook(@PathVariable String id) {
         return bookLibraryService.getBook(id);
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public BookLibraryDTO  addBook(@RequestBody BookLibraryDTO  book) {
 
         return bookLibraryService.createBook(book);
     }
 
     @PutMapping("{/id}")
-    public Book updateBook(@PathVariable String id, Book book) {
+    public BookLibraryDTO  updateBook(@PathVariable String id, BookLibraryDTO  book) {
 
         return bookLibraryService.updateBook(book);
     }
