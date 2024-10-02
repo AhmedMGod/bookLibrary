@@ -18,6 +18,7 @@ public class BookLibraryService {
     public Book createBook(Book book) {
         Book newBook = new Book(
                 book.id(),
+
                 book.author(),
                 book.image(),
                 book.title()

@@ -18,6 +18,7 @@ public class BookLibraryController {
 
         return bookLibraryService.getBooks();
     }
+
     @GetMapping("{/id}")
     public Book getBook(@PathVariable String id) {
         return bookLibraryService.getBook(id);
