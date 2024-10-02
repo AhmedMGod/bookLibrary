@@ -15,16 +15,24 @@ public class BookLibraryController {
 
     @GetMapping
     public List<Book> getBooks() {
+
         return bookLibraryService.getBooks();
+    }
+
+    @GetMapping("{/id}")
+    public Book getBook(@PathVariable String id) {
+        return bookLibraryService.getBook(id);
     }
 
     @PostMapping
     public Book addBook(@RequestBody Book book) {
+
         return bookLibraryService.createBook(book);
     }
 
     @PutMapping("{/id}")
     public Book updateBook(@PathVariable String id, Book book) {
+
         return bookLibraryService.updateBook(book);
     }
 
