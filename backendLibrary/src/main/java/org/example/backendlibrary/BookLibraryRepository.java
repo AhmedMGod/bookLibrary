@@ -2,6 +2,8 @@ package org.example.backendlibrary;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BookLibraryRepository extends MongoRepository<Book, String> {
+import java.util.UUID;
+
+public interface BookLibraryRepository extends MongoRepository<BookLibraryDTO, UUID> {
 
 }
