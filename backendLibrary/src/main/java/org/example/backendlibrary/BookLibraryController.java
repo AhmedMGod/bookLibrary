@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,29 +15,29 @@ public class BookLibraryController {
     private final BookLibraryService bookLibraryService;
 
     @GetMapping
-    public List<BookLibraryDTO > getBooks() {
+    public List<BookLibraryDTO> getBooks() {
 
         return bookLibraryService.getBooks();
     }
 
-    @GetMapping("{/id}")
-    public BookLibraryDTO  getBook(@PathVariable String id) {
+    @GetMapping("{id}")
+    public BookLibraryDTO getBook(@PathVariable String id) {
         return bookLibraryService.getBook(id);
     }
 
     @PostMapping
-    public BookLibraryDTO  addBook(@RequestBody BookLibraryDTO  book) {
+    public BookLibraryDTO addBook(@RequestBody BookLibraryDTO  book) {
 
         return bookLibraryService.createBook(book);
     }
 
-    @PutMapping("{/id}")
-    public BookLibraryDTO  updateBook(@PathVariable String id, BookLibraryDTO  book) {
+    @PutMapping("{id}")
+    public BookLibraryDTO  updateBook(@PathVariable UUID id, @RequestBody BookLibraryDTO  book) {
 
-        return bookLibraryService.updateBook(book);
+        return bookLibraryService.updateBook(id,book);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("{id}")
     public void deleteBook(@PathVariable String id) {
         bookLibraryService.deleteBook(id);
     }
