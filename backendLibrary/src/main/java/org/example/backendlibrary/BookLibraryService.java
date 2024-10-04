@@ -46,9 +46,11 @@ public class BookLibraryService {
     }
 
 
-    public void deleteBook(String id) {
+    public void  deleteBook(UUID id) {
 
-        bookLibraryRepository.deleteById(UUID.fromString(id));
+        bookLibraryRepository.deleteById(id);
+
+
     }
 
     public BookLibraryDTO getBook(String id) {
