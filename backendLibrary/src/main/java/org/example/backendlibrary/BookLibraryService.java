@@ -10,7 +10,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookLibraryService {
 
-    private BookLibraryRepository bookLibraryRepository;
+    private final BookLibraryRepository bookLibraryRepository;
 
     public List<BookLibraryDTO> getBooks() {
         return bookLibraryRepository.findAll();
@@ -19,17 +19,32 @@ public class BookLibraryService {
     public BookLibraryDTO createBook(BookLibraryDTO bookLibraryDTO) {
         BookLibraryDTO newBook = new BookLibraryDTO(
                 UUID.randomUUID(),
+                bookLibraryDTO.title(),
                 bookLibraryDTO.author(),
-                bookLibraryDTO.image(),
-                bookLibraryDTO.title()
+                bookLibraryDTO.image()
+
         );
         return bookLibraryRepository.save(newBook);
     }
+// aktuell book wurde aktualisiert
+    public BookLibraryDTO updateBook(UUID id, BookLibraryDTO bookDto) {
+        BookLibraryDTO bookToUpdate = bookLibraryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book with id: " + id + " not found"));
 
-    public BookLibraryDTO updateBook(BookLibraryDTO book) {
+        // Erstellen einer neuen Entität mit aktualisierten Daten
+        BookLibraryDTO updatedBook = new BookLibraryDTO(
+                id,
+                bookDto.title(),
+                bookDto.author(),
+                bookDto.image()
+        );
 
-        return bookLibraryRepository.save(book);
+        // Speichern des aktualisierten Buches
+         return  bookLibraryRepository.save(updatedBook);
+
+
     }
+
 
     public void deleteBook(String id) {
 
