@@ -9,6 +9,7 @@ export class BookService {
         return response.data;
     }
 
+
     async getBook(id: string): Promise<BookLibrary> {
         const response = await axios.get<BookLibrary>(`${API_URL}/${id}`);
         return response.data;
