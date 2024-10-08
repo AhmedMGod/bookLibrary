@@ -1,15 +1,11 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-dark text-light mt-auto py-3">
+        <footer className="bg-dark text-white text-center py-3 mt-4">
             <Container>
-                <Row>
-                    <Col className="text-center">
-                        <p>© 2024 Books Library App. All Rights Reserved.</p>
-                    </Col>
-                </Row>
+                <p>Book Library &copy; {new Date().getFullYear()}</p>
             </Container>
         </footer>
     );
