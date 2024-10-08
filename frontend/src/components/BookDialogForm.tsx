@@ -107,6 +107,7 @@ export const BookDialogForm: React.FC<BookDialogProps> = ({ visible, book, onHid
     const bookService = new BookService();
 
     useEffect(() => {
+
         if (book) {
             reset(book);  // Formular mit buchdaten füllen
         } else {
