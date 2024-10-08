@@ -1,3 +1,4 @@
+/*
 import axios from 'axios';
 import { BookLibrary } from './BookLibrary.ts';
 
@@ -28,4 +29,4 @@ export class BookService {
     async deleteBook(id: string): Promise<void> {
         await axios.delete(`${API_URL}/${id}`);
     }
-}
+}*/

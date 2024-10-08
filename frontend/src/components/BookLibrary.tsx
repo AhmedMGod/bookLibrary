@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { Form, Button, Row, Col, Card, Container, Modal } from 'react-bootstrap';
+// src/BookLibrary.tsx
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap';
+import axios from 'axios';
 import NavBar from './Navbar';
 import Footer from './Footer';
 
 // Book interface
 interface Book {
-    id: number;
+    id: string;
     title: string;
     author: string;
     image: string;
@@ -17,27 +19,47 @@ const BookLibrary: React.FC = () => {
     const [author, setAuthor] = useState('');  // State for author input
     const [image, setImage] = useState<string | ArrayBuffer | null>('');  // State for uploaded image
     const [editMode, setEditMode] = useState(false);  // State to control edit mode
-    const [editingBookId, setEditingBookId] = useState<number | null>(null);  // State for the book being edited
+    const [editingBookId, setEditingBookId] = useState<string | null>(null);  // State for the book being edited
+
+    const API_URL = '/api/books'; // Adjust your backend URL as needed
+
+    // Fetch books from the backend
+    const fetchBooks = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            setBooks(response.data);  // Set books from response
+        } catch (error) {
+            console.error('Error fetching books:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBooks();  // Fetch books on component mount
+    }, []);
 
     // Handle adding a new book
-    const handleAddBook = (e: React.FormEvent) => {
+    const handleAddBook = async (e: React.FormEvent) => {
         e.preventDefault();  // Prevent default form submission
 
         const newBook: Book = {
-            id: books.length + 1,  // Simple ID generation for demo purposes
+            id:"" , // You might want to remove this if your backend assigns IDs
             title,
             author,
             image: typeof image === 'string' ? image : '', // Store image URL
         };
 
-        setBooks([...books, newBook]); // Add new book to the state
-        setTitle('');  // Clear the form fields
-        setAuthor('');
-        setImage(''); // Clear the image preview
+        try {
+            await axios.post(API_URL, newBook);  // Send POST request to add the new book
+            setBooks([...books, newBook]); // Add new book to the state
+            resetForm();  // Reset the form fields
+        } catch (error) {
+            console.error('Error adding book:', error);
+        }
     };
 
     // Handle editing a book
-    const handleEditBook = (id: number) => {
+    const handleEditBook = (id: string,e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const bookToEdit = books.find(book => book.id === id);
         if (bookToEdit) {
             setEditingBookId(bookToEdit.id);
@@ -49,20 +71,38 @@ const BookLibrary: React.FC = () => {
     };
 
     // Handle saving the edited book
-    const handleSaveEdit = () => {
-        setBooks(books.map(book =>
-            book.id === editingBookId ? { ...book, title, author, image: typeof image === 'string' ? image : '' } : book
-        ));
-        setEditMode(false);  // Disable edit mode
-        setEditingBookId(null);  // Clear editing book ID
-        setTitle('');  // Clear the form fields
-        setAuthor('');
-        setImage(''); // Clear the image preview
+    const handleSaveEdit = (e: React.MouseEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (editingBookId === null) return;
+
+        const updatedBook: Book = {
+            id: editingBookId,
+            title,
+            author,
+            image: typeof image === 'string' ? image : '',
+        };
+
+
+             axios.put(`${API_URL}/${editingBookId}`, updatedBook)
+                 .catch(error => console.log(error));
+
+        // Send PUT request to update the book
+                 setBooks(books.map(book => (book.id === editingBookId ? updatedBook : book))); // Update book in state
+            resetForm();  // Reset the form fields
+
+
+
+
     };
 
     // Handle deleting a book
-    const handleDeleteBook = (id: number) => {
-        setBooks(books.filter(book => book.id !== id));  // Remove book from the state
+    const handleDeleteBook = async (id: string) => {
+        try {
+            await axios.delete(`${API_URL}/${id}`); // Send DELETE request to remove the book
+            setBooks(books.filter(book => book.id !== id));  // Remove book from the state
+        } catch (error) {
+            console.error('Error deleting book:', error);
+        }
     };
 
     // Handle image upload
@@ -77,6 +117,17 @@ const BookLibrary: React.FC = () => {
         }
     };
 
+    // Reset form fields
+    const resetForm = () => {
+        setEditMode(false);  // Disable edit mode
+        setEditingBookId(null);  // Clear editing book ID
+        setTitle('');  // Clear the form fields
+        setAuthor('');
+        setImage(''); // Clear the image preview
+    };
+
+
+
     return (
         <>
             <NavBar />  {/* Include Navbar */}
@@ -85,7 +136,7 @@ const BookLibrary: React.FC = () => {
                     {/* Form to add a new book */}
                     <Col sm={4} className="mb-4">
                         <h2 className="text-center">Add a New Book</h2>
-                        <Form onSubmit={handleAddBook} className="shadow p-3 mb-5 bg-white rounded">
+                        <Form onSubmit={editMode ? handleSaveEdit : handleAddBook} className="shadow p-3 mb-5 bg-white rounded">
                             <Form.Group className="mb-3">
                                 <Form.Label>Title</Form.Label>
                                 <Form.Control
@@ -128,7 +179,7 @@ const BookLibrary: React.FC = () => {
                             )}
 
                             <Button variant="primary" type="submit" >
-                                Add Book
+                                {editMode ? 'Save Changes' : 'Add Book'}
                             </Button>
                         </Form>
                     </Col>
@@ -147,7 +198,7 @@ const BookLibrary: React.FC = () => {
                                                 <Card.Text>{book.author}</Card.Text>
                                                 <Button
                                                     variant="warning"
-                                                    onClick={() => handleEditBook(book.id)}
+                                                    onClick={(e) => handleEditBook(book.id,e )}
                                                 >
                                                     Edit
                                                 </Button>
@@ -169,65 +220,6 @@ const BookLibrary: React.FC = () => {
                     </Col>
                 </Row>
             </Container>
-
-            {/* Edit Modal */}
-            <Modal show={editMode} onHide={() => setEditMode(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Book</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Enter book title"
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3">
-                            <Form.Label>Author</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={author}
-                                onChange={(e) => setAuthor(e.target.value)}
-                                placeholder="Enter author name"
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3">
-                            <Form.Label>Upload Image</Form.Label>
-                            <Form.Control
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                            />
-                        </Form.Group>
-
-                        {image && (
-                            <div className="mb-3">
-                                <img
-                                    src={typeof image === 'string' ? image : ''}
-                                    alt="Uploaded"
-                                    style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px' }}
-                                />
-                            </div>
-                        )}
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setEditMode(false)}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={handleSaveEdit}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
 
             <Footer />  {/* Include Footer */}
         </>

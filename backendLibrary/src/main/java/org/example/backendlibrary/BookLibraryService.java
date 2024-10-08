@@ -18,7 +18,7 @@ public class BookLibraryService {
 
     public BookLibraryDTO createBook(BookLibraryDTO bookLibraryDTO) {
         BookLibraryDTO newBook = new BookLibraryDTO(
-                UUID.randomUUID(),
+                UUID.randomUUID().toString(),
                 bookLibraryDTO.title(),
                 bookLibraryDTO.author(),
                 bookLibraryDTO.image()
@@ -27,20 +27,20 @@ public class BookLibraryService {
         return bookLibraryRepository.save(newBook);
     }
 // aktuell book wurde aktualisiert
-    public BookLibraryDTO updateBook(UUID id, BookLibraryDTO bookDto) {
-        BookLibraryDTO bookToUpdate = bookLibraryRepository.findById(id)
+    public BookLibraryDTO updateBook(String id, BookLibraryDTO bookDto) {
+        BookLibraryDTO bookToUpdate = bookLibraryRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new RuntimeException("Book with id: " + id + " not found"));
 
         // Erstellen einer neuen Entität mit aktualisierten Daten
         BookLibraryDTO updatedBook = new BookLibraryDTO(
-                id,
+                bookDto.id(),
                 bookDto.title(),
                 bookDto.author(),
                 bookDto.image()
         );
 
         // Speichern des aktualisierten Buches
-         return  bookLibraryRepository.save(updatedBook);
+         return  bookLibraryRepository.save(bookToUpdate);
 
 
     }
