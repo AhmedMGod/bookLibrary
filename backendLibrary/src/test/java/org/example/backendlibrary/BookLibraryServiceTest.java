@@ -25,7 +25,7 @@ class BookLibraryServiceTest {
     @Test
     public void test_should_rturn_book_library_When_Call_With_Id() {
         //GIVEN
-        BookLibraryDTO expeted = new BookLibraryDTO(UUID.randomUUID(),"Roman de France","Jean Paul Satre","roman.jpeg");
+        BookLibraryDTO expeted = new BookLibraryDTO(UUID.randomUUID().toString(),"Roman de France","Jean Paul Satre","roman.jpeg");
         bookLibraryRepository.save(expeted);
 
         when(bookLibraryRepository.findAll()).thenReturn(List.of(expeted));
@@ -38,11 +38,11 @@ class BookLibraryServiceTest {
     @Test
     public void test_should_rturn_book_By_Id_When_Call_With_Id() {
         //GIVEN
-        UUID expetedId = UUID.randomUUID();
+        String  expetedId = "214";
         BookLibraryDTO generated = new BookLibraryDTO(expetedId,"Holloween","Rene descarte","grenn.jpeg");
         bookLibraryRepository.save(generated);
 
-        when(bookLibraryRepository.findById(expetedId)).thenReturn(Optional.of(generated));
+        when(bookLibraryRepository.findById(UUID.fromString(expetedId))).thenReturn(Optional.of(generated));
         //Act
 
         BookLibraryDTO actual = bookLibraryService.getBook(String.valueOf(expetedId));
@@ -51,7 +51,7 @@ class BookLibraryServiceTest {
 
     @Test
     public void test_should_create_book() {
-        BookLibraryDTO created = new BookLibraryDTO(UUID.randomUUID(),"Sommer Sale","Martin camus","meen.jpeg");
+        BookLibraryDTO created = new BookLibraryDTO(UUID.randomUUID().toString(),"Sommer Sale","Martin camus","meen.jpeg");
         bookLibraryRepository.save(created);
 
         when(bookLibraryRepository.save(any(BookLibraryDTO.class))).thenReturn(created);
@@ -62,11 +62,11 @@ class BookLibraryServiceTest {
 
     @Test
     public void test_should_update_book_When_Call_With_Id() {
-        UUID expetedId = UUID.randomUUID();
+        String expetedId = UUID.randomUUID().toString();
         BookLibraryDTO neue = new BookLibraryDTO(expetedId,"Arabische film","Mandator","krieg.jpg");
         bookLibraryRepository.save(neue);
 
-        when(bookLibraryRepository.findById(expetedId)).thenReturn(Optional.of(neue));
+        when(bookLibraryRepository.findById(UUID.fromString(expetedId))).thenReturn(Optional.of(neue));
         when(bookLibraryRepository.save(any(BookLibraryDTO.class))).thenReturn(neue);
         BookLibraryDTO actual = bookLibraryService.updateBook(expetedId,neue);
 
@@ -78,14 +78,14 @@ class BookLibraryServiceTest {
 
     @Test
     public void test_should_delete_book_When_Call_With_Id() {
-        UUID expectedId = UUID.randomUUID();
+        String expectedId = UUID.randomUUID().toString();
         BookLibraryDTO deleted = new BookLibraryDTO(expectedId,"sehenswürdigkeitfilm","Samory","kunsz.jpeg");
         bookLibraryRepository.save(deleted);
 
 
-         bookLibraryService.deleteBook(expectedId);
+         bookLibraryService.deleteBook(UUID.fromString(expectedId));
 
-         verify(bookLibraryRepository,times(1)).deleteById(expectedId);
+         verify(bookLibraryRepository,times(1)).deleteById(UUID.fromString(expectedId));
 
 
 

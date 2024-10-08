@@ -7,7 +7,7 @@ import Footer from './Footer';
 
 // Book interface
 interface Book {
-    id: number;
+    id: string;
     title: string;
     author: string;
     image: string;
@@ -19,9 +19,9 @@ const BookLibrary: React.FC = () => {
     const [author, setAuthor] = useState('');  // State for author input
     const [image, setImage] = useState<string | ArrayBuffer | null>('');  // State for uploaded image
     const [editMode, setEditMode] = useState(false);  // State to control edit mode
-    const [editingBookId, setEditingBookId] = useState<number | null>(null);  // State for the book being edited
+    const [editingBookId, setEditingBookId] = useState<string | null>(null);  // State for the book being edited
 
-    const API_URL = 'http://localhost:8080/api/books'; // Adjust your backend URL as needed
+    const API_URL = '/api/books'; // Adjust your backend URL as needed
 
     // Fetch books from the backend
     const fetchBooks = async () => {
@@ -42,7 +42,7 @@ const BookLibrary: React.FC = () => {
         e.preventDefault();  // Prevent default form submission
 
         const newBook: Book = {
-            id: books.length + 1,  // You might want to remove this if your backend assigns IDs
+            id:"" , // You might want to remove this if your backend assigns IDs
             title,
             author,
             image: typeof image === 'string' ? image : '', // Store image URL
@@ -58,7 +58,8 @@ const BookLibrary: React.FC = () => {
     };
 
     // Handle editing a book
-    const handleEditBook = (id: number) => {
+    const handleEditBook = (id: string,e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const bookToEdit = books.find(book => book.id === id);
         if (bookToEdit) {
             setEditingBookId(bookToEdit.id);
@@ -70,7 +71,8 @@ const BookLibrary: React.FC = () => {
     };
 
     // Handle saving the edited book
-    const handleSaveEdit = async () => {
+    const handleSaveEdit = (e: React.MouseEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (editingBookId === null) return;
 
         const updatedBook: Book = {
@@ -80,17 +82,21 @@ const BookLibrary: React.FC = () => {
             image: typeof image === 'string' ? image : '',
         };
 
-        try {
-            await axios.put(`${API_URL}/${editingBookId}`, updatedBook); // Send PUT request to update the book
-            setBooks(books.map(book => (book.id === editingBookId ? updatedBook : book))); // Update book in state
+
+             axios.put(`${API_URL}/${editingBookId}`, updatedBook)
+                 .catch(error => console.log(error));
+
+        // Send PUT request to update the book
+                 setBooks(books.map(book => (book.id === editingBookId ? updatedBook : book))); // Update book in state
             resetForm();  // Reset the form fields
-        } catch (error) {
-            console.error('Error updating book:', error);
-        }
+
+
+
+
     };
 
     // Handle deleting a book
-    const handleDeleteBook = async (id: number) => {
+    const handleDeleteBook = async (id: string) => {
         try {
             await axios.delete(`${API_URL}/${id}`); // Send DELETE request to remove the book
             setBooks(books.filter(book => book.id !== id));  // Remove book from the state
@@ -119,6 +125,8 @@ const BookLibrary: React.FC = () => {
         setAuthor('');
         setImage(''); // Clear the image preview
     };
+
+
 
     return (
         <>
@@ -190,7 +198,7 @@ const BookLibrary: React.FC = () => {
                                                 <Card.Text>{book.author}</Card.Text>
                                                 <Button
                                                     variant="warning"
-                                                    onClick={() => handleEditBook(book.id)}
+                                                    onClick={(e) => handleEditBook(book.id,e )}
                                                 >
                                                     Edit
                                                 </Button>

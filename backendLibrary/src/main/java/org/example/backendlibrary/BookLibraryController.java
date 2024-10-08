@@ -20,7 +20,7 @@ public class BookLibraryController {
         return bookLibraryService.getBooks();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public BookLibraryDTO getBook(@PathVariable String id) {
         return bookLibraryService.getBook(id);
     }
@@ -31,13 +31,13 @@ public class BookLibraryController {
         return bookLibraryService.createBook(book);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public BookLibraryDTO  updateBook(@PathVariable UUID id, @RequestBody BookLibraryDTO  book) {
 
-        return bookLibraryService.updateBook(id,book);
+        return bookLibraryService.updateBook(String.valueOf(id),book);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable UUID id) {
         bookLibraryService.deleteBook(id);
     }
